@@ -26,13 +26,15 @@ pipeline {
                 sh 'docker build -t docker_jenkins_springboot:${BUILD_NUMBER} .'
             }
         }
-        stage('Docker Login'){
-            
+        stage('Docker Login') {
             steps {
-                 withCredentials([usernamePassword(credentialsId: 'DockerId', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                withCredentials([usernamePassword(credentialsId: 'DockerId', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    script {
+                        def dockerLoginCmd = "docker login -u ${DOCKER_USERNAME} --password-stdin"
+                        sh "echo ${DOCKER_PASSWORD} | ${dockerLoginCmd}"
+                    }
                 }
-            }                
+            }
         }
         stage('Docker Push'){
             steps {
