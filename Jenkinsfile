@@ -36,18 +36,18 @@ pipeline {
                 }
             }
         }
-        stage('Docker Push'){
+        
+        stage('Docker Push') {
             steps {
-                sh 'docker push alfiyazabir05/docker_jenkins_springboot:${BUILD_NUMBER}'
+                sh "docker push alfiyazabir05/docker_jenkins_springboot:${BUILD_NUMBER}"
             }
         }
-        stage('Docker deploy'){
+        stage('Docker deploy') {
             steps {
-               
-                sh 'docker run -itd -p  8081:8081 alfiyazabi05/docker_jenkins_springboot:${BUILD_NUMBER}'
+                sh "docker run -itd -p 8081:8081 alfiyazabir05/docker_jenkins_springboot:${BUILD_NUMBER}"
             }
         }
-        stage('Archving') { 
+       stage('Archving') { 
             steps {
                  archiveArtifacts '**/target/*.jar'
             }
