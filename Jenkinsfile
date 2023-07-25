@@ -20,8 +20,6 @@ pipeline {
         stage('Build Docker image'){
           
             steps {
-                echo "Hello Java Express"
-                sh 'ls'
                 sh 'docker build -t alfiyazabir05/docker_jenkins_springboot:${BUILD_NUMBER} .'
             }
         }
