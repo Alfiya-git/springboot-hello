@@ -1,9 +1,5 @@
 pipeline {
-    agent { 
-        node { 
-            label "dev"
-        }
-    }
+    agent any
     tools {
         maven "3.8.5"
     
