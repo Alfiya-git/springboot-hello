@@ -32,16 +32,19 @@ pipeline {
                     sh "docker push 939238552155.dkr.ecr.us-east-2.amazonaws.com/test:latest"
                 }
             }
+        }
             
-           stage('Deploy to Fargate') {
-            environment {
+           stage('Deploy to Fargate') 
+            {
+                environment {
                 AWS_REGION = 'your-aws-region'
                 ECS_CLUSTER_NAME = 'your-ecs-cluster-name'
                 SERVICE_NAME = 'your-ecs-service-name'
                 TASK_DEFINITION_NAME = 'your-task-definition-name'
                 CONTAINER_NAME = 'your-container-name'
                 IMAGE_TAG = "${env.BUILD_ID}"
-            }
+                }
+                
             steps {
                 // Update the task definition with the new Docker image version
                 sh "aws ecs register-task-definition \
@@ -57,6 +60,6 @@ pipeline {
                     --task-definition ${TASK_DEFINITION_NAME}"
             }
         }
-    }
+    
     }
 }
