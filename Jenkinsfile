@@ -1,8 +1,5 @@
 pipeline {
     agent any 
-    environment {
-        registry = "939238552155.dkr.ecr.us-east-2.amazonaws.com/test"
-    }
     
     tools {
         maven "3.8.5"
@@ -22,13 +19,11 @@ pipeline {
             }
         }
         
-        stage ('Build Image')
-        {
-          steps {
-              script {
-                    dockerImage = docker.build registry
-                    }
-                }
+         stage('Build Docker image'){
+          
+            steps {
+                sh 'docker build -t jenkins_springboot:${BUILD_NUMBER} .'
+            }
         }
         
            stage('Push to ECR') {
