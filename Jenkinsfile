@@ -21,12 +21,14 @@ pipeline {
                 sh "mvn package"
             }
         }
-        stage('Build Docker image'){
-          steps{
+        
+        stage ('Build Image')
+        {
+          steps {
               script {
                     dockerImage = docker.build registry
                     }
-        }
+                }
         }
         
            stage('Push to ECR') {
