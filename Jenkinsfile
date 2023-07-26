@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent any 
+    environment {
+        registry = "939238552155.dkr.ecr.us-east-2.amazonaws.com/test"
+    }
+    
     tools {
         maven "3.8.5"
     
@@ -18,30 +22,17 @@ pipeline {
             }
         }
         stage('Build Docker image'){
-          
-            steps {
-                sh 'docker build -t alfiyazabir05/docker_jenkins_springboot:${BUILD_NUMBER} .'
-            }
-        }
-        stage('Docker Login') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'DockerId', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    script {
-                        def dockerLoginCmd = "docker login -u ${DOCKER_USERNAME} --password-stdin"
-                        sh "echo ${DOCKER_PASSWORD} | ${dockerLoginCmd}"
+          steps{
+              script {
+                    dockerImage = docker.build registry
                     }
-                }
-            }
+        }
         }
         
-        stage('Docker Push') {
+           stage('Push to ECR') {
             steps {
-                sh "docker push alfiyazabir05/docker_jenkins_springboot:${BUILD_NUMBER}"
-            }
-        }
-        stage('Docker deploy') {
-            steps {
-                sh "docker run -itd -p 8081:8080 alfiyazabir05/docker_jenkins_springboot:${BUILD_NUMBER}"
+                sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 939238552155.dkr.ecr.us-east-2.amazonaws.com"
+                sh "docker push 939238552155.dkr.ecr.us-east-2.amazonaws.com/test:latest"
             }
         }
     
