@@ -17,15 +17,15 @@ build:
     - echo Building the Docker image...
     - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
     - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:$BUILD_TAG
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-      - cat imagedefinitions.json 
+post_build:
+  commands:
+    - echo Build completed on `date`
+    - echo Pushing the Docker images...
+    - docker push $REPOSITORY_URI:$IMAGE_TAG
+    - docker push $REPOSITORY_URI:$IMAGE_TAG  # Use $IMAGE_TAG for both image tags.
+    - echo Writing image definitions file...
+    - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+    - cat imagedefinitions.json
 artifacts:
     files: 
      - imagedefinitions.json
