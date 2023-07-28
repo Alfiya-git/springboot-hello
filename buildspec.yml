@@ -9,14 +9,15 @@ phases:
       - REPOSITORY_URI=public.ecr.aws/x6g2y1g4/test-image
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
-  build:
-    commands:
-      - echo Build started on `date`
-      - echo building the Jar file
-      - mvn clean install
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:$BUILD_TAG .
-      - docker tag $REPOSITORY_URI:$BUILD_TAG $REPOSITORY_URI:latest
+ build:
+  commands:
+    - echo Build started on `date`
+    - echo building the Jar file
+    - mvn clean install
+    - echo Building the Docker image...
+    - echo "REPOSITORY_URI: $REPOSITORY_URI, IMAGE_TAG: $IMAGE_TAG"
+    - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+    - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
   post_build:
     commands:
       - echo Build completed on `date`
