@@ -22,9 +22,9 @@ post_build:
     - echo Build completed on `date`
     - echo Pushing the Docker images...
     - docker push $REPOSITORY_URI:$IMAGE_TAG
-    - docker push $REPOSITORY_URI:$IMAGE_TAG  # Use $IMAGE_TAG for both image tags.
+    - docker push $REPOSITORY_URI:$IMAGE_TAG  
     - echo Writing image definitions file...
-    - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+    - printf '[{"name":"springbootapp","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
     - cat imagedefinitions.json
 artifacts:
     files: 
