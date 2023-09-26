@@ -26,10 +26,10 @@ post_build:
     # - docker push $REPOSITORY_URI:$IMAGE_TAG
     # - docker push $REPOSITORY_URI:$IMAGE_TAG  
     - docker push public.ecr.aws/x6g2y1g4/test-image:latest
-#     - echo Writing image definitions file...
-#     - printf '[{"name":"springbootapp","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-#     - cat imagedefinitions.json
-# artifacts:
-#     files: 
-#      - imagedefinitions.json
-#      - target/DockerDemo.jar
+    - echo Writing image definitions file...
+    - printf '[{"name":"springbootapp","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+    - cat imagedefinitions.json
+artifacts:
+    files: 
+     - imagedefinitions.json
+     - target/DockerDemo.jar
